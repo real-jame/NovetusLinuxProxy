@@ -14,14 +14,22 @@ To build, use the [.NET 7.0 CLI](https://dotnet.microsoft.com/en-us/download/dot
 
 ## Usage
 
-This program is a companion to Novetus. Start it when you are using the launcher. When you are done playing, exit it.
+The web proxy must be configured manually on your system. Luckily, we only need to set it under Wine's settings, not your entire system. The best option is to run Novetus in a dedicated Wine prefix, which will allow other programs on Wine to connect to the internet normally. Create the prefix and open the HTTP proxy settings with this command (change "yourusername" to your user name): 
 
-**The proxy settings must be configured manually, both for starting and stopping.** The program will run regardless, but you must configure the proxy in your system settings for it to take effect. The place to set internet proxies depends on your desktop environment and distro. Once you have reached the place to change it, set these properties accordingly:
+`WINEPREFIX="/home/yourusername/.novetus" WINEARCH=win32 wine rundll32.exe shell32.dll,Control_RunDLL inetcpl.cpl`
 
-- Proxy to **Manual**
-- HTTP Proxy to **localhost** and port to **61710**
-- Ignore Hosts to **""** (blank, remove any existing entries)
+Next, click on the `Connections` tab. In the `Proxy server` section, check the `Use a proxy server` checkbox, set `Address` to `localhost`, and `Port` to `61710`. Then click `Apply` and `Ok` to save your changes and close the window.
 
-When you are done, set the proxy back to **Disabled**, or your system will not be able to access anything over HTTP.
+Now, you may open Novetus, with a command like this (replacing "yourusername" with your user name and /path/to/novetus-windows/ with the path to your copy of Novetus):
 
-(These names apply to Gnome's Network settings page on Fedora, other DEs and distros will vary)
+`WINEPREFIX="/home/yourusername/.novetus" WINEARCH=win32 wine /path/to/novetus-windows/NovetusBootstrapper.exe`
+
+Use this command when you want to start Novetus. Alongside it, start the proxy server too with this command (in a separate terminal):
+
+`/path/to/NovetusLinuxProxy`
+
+The proxy server will start.
+
+### If the proxy server errors on startup
+
+If this happens, the Novetus proxy server may be using the port. Launch Novetus with the console, and input the console command `proxy disable` to permanently turn off Novetus's own proxy. Then, try running the Linux proxy server again.
